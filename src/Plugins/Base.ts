@@ -5,13 +5,14 @@ export default interface NodebarPlugin {
 class NotImplemented extends Error {}
 
 export default class Base implements NodebarPlugin {
-  fullText: string = "";
+  full_text: string = "";
   name: string = "";
   ticks: number = 1;
 
   constructor(name: string, ticks: number) {
     this.name = name;
     this.ticks = ticks;
+    this.cycle()
   }
 
   cycle() {
