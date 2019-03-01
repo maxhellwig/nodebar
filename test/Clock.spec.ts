@@ -1,4 +1,4 @@
-import Clock from "../Plugins/Clock";
+import Clock from "../src/Plugins/Clock";
 import { expect } from "chai";
 import moment = require("moment");
 import sinon from "sinon";

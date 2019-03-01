@@ -2,7 +2,13 @@ export default interface NodebarPlugin {
   cycle(): void
 }
 
-class NotImplemented extends Error {
+export class NotImplemented extends Error {
+  constructor(message:string) {
+    super();
+    Error.captureStackTrace(this, this.constructor);
+    this.name = "NotImplemented";
+    this.message = message;
+  }
 }
 
 export default class Base implements NodebarPlugin {
@@ -13,7 +19,6 @@ export default class Base implements NodebarPlugin {
   constructor(name: string, ticks: number) {
     this.name = name;
     this.ticks = ticks;
-    this.cycle();
   }
 
   cycle() {
@@ -23,9 +28,9 @@ export default class Base implements NodebarPlugin {
   emit(): string {
     return JSON.stringify(this);
   }
-
   run() {
     const self = this;
+    self.cycle();
     setInterval(() => {
       try {
         self.cycle();
