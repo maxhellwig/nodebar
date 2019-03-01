@@ -8,7 +8,7 @@
     "start": "npm run build:live",
     "build": "tsc",
     "build:live": "nodemon --watch 'src/**/*.ts' --exec 'tsc' && node lib/index.js",
-    "test": "mocha -r ts-node/register tests/**/*.spec.ts"
+    "test": "mocha -r ts-node/register src/tests/**/*.spec.ts"
   },
   "author": "Max Hellwig",
   "license": "MIT",

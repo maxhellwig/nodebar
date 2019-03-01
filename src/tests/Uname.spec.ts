@@ -1,4 +1,4 @@
-import Uname from "../src/Plugins/Uname";
+import Uname from "../Plugins/Uname";
 import { expect } from "chai";
 import * as os from "os";
 
