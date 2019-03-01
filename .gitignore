@@ -57,3 +57,5 @@ fabric.properties
 .idea/httpRequests
 
 lib/
+src/**/*.js
+src/**/*.js.map
