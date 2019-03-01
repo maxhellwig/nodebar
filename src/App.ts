@@ -2,6 +2,8 @@ import Base from "./Plugins/Base";
 
 const HEADER: string = JSON.stringify({ "version": 1, "stop_signal": 10, "cont_signal": 12, "click_events": true });
 
+const DEBUG: string|undefined = process.env.DEBUG;
+
 export default class App {
 
 
@@ -24,7 +26,11 @@ export default class App {
     setInterval(() => {
       let output: string;
       output = this.collectOutput(this.plugins);
-      process.stdout.write(output);
+      if (DEBUG) {
+        console.log(output);
+      } else {
+        process.stdout.write(output);
+      }
       output = "";
     }, 1000);
   }
