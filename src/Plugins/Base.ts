@@ -26,7 +26,12 @@ export default class Base implements NodebarPlugin {
   run() {
     const self = this;
     const pluginTimeout = setInterval(() => {
-      self.cycle();
+      try {
+        self.cycle();
+
+      } catch (e) {
+        throw e;
+      }
     }, self.ticks * 1000);
   }
 }
