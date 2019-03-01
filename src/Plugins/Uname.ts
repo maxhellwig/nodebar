@@ -4,7 +4,7 @@ import * as os from "os";
 export default class Uname extends Base {
 
   static getHostname(): string {
-    return os.hostname()
+    return os.hostname();
   }
 
   cycle() {

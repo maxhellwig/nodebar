@@ -3,7 +3,7 @@ export default interface NodebarPlugin {
 }
 
 export class NotImplemented extends Error {
-  constructor(message:string) {
+  constructor(message: string) {
     super();
     Error.captureStackTrace(this, this.constructor);
     this.name = "NotImplemented";
@@ -28,6 +28,7 @@ export default class Base implements NodebarPlugin {
   emit(): string {
     return JSON.stringify(this);
   }
+
   run() {
     const self = this;
     self.cycle();

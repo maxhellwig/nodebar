@@ -17,8 +17,8 @@ export default class Clock extends Base {
     this.format = dateTimeFormat || "YYYY-MM-DD hh:mm:ss";
   }
 
-  getDateTime() : string {
-    return moment().format(this.format)
+  getDateTime(): string {
+    return moment().format(this.format);
   }
 
   cycle() {
