@@ -2,7 +2,8 @@ export default interface NodebarPlugin {
   cycle(): void
 }
 
-class NotImplemented extends Error {}
+class NotImplemented extends Error {
+}
 
 export default class Base implements NodebarPlugin {
   full_text: string = "";
@@ -12,7 +13,7 @@ export default class Base implements NodebarPlugin {
   constructor(name: string, ticks: number) {
     this.name = name;
     this.ticks = ticks;
-    this.cycle()
+    this.cycle();
   }
 
   cycle() {
@@ -25,10 +26,9 @@ export default class Base implements NodebarPlugin {
 
   run() {
     const self = this;
-    const pluginTimeout = setInterval(() => {
+    setInterval(() => {
       try {
         self.cycle();
-
       } catch (e) {
         throw e;
       }
