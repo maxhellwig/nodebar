@@ -23,5 +23,9 @@
     "prettier": "1.16.4",
     "ts-node": "^8.0.2",
     "typescript": "3.3.3333"
+  },
+  "dependencies": {
+    "@types/moment": "^2.13.0",
+    "moment": "^2.24.0"
   }
 }
