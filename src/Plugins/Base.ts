@@ -40,7 +40,10 @@ export default class Base implements NodebarPlugin {
   emit(): string {
     return JSON.stringify({
       full_text: this.full_text,
-      name: this.name
+      name: this.name,
+      color: this.color,
+      background: this.background,
+      urgent: this.urgent
     });
   }
 
