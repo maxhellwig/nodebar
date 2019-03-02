@@ -1,11 +1,11 @@
-import Uname from "../src/Plugins/Uname";
+import Hostname from "../src/Plugins/Hostname";
 import { expect } from "chai";
 import * as os from "os";
 
-describe("Cycle of Uname", () => {
+describe("Cycle of Hostname", () => {
   it("should return ubuntu when os.hostname() is ubuntu", () => {
     const currentHostname = os.hostname();
-    const uname = new Uname("Uname", 1);
+    const uname = new Hostname("Hostname", 1);
     uname.cycle();
     expect(uname.full_text).to.equal(currentHostname);
   });
