@@ -11,7 +11,9 @@ function main() {
   const clock: Base = new Clock("Clock", 1);
   const uname: Base = new Hostname("Hostname", 3600);
   const uptime: Base = new Uptime("Uptime", 1);
-  plugins.push(clock, uname, uptime);
+  const enp0s3: Base = new Net("enp0s3", 3);
+  const lo: Base = new Net("lo", 3);
+  plugins.push(enp0s3, lo, uname, uptime, clock);
   const app = new App(plugins);
   app.run();
 }
