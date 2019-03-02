@@ -34,7 +34,6 @@
   },
   "dependencies": {
     "@types/moment": "^2.13.0",
-    "humanize-duration": "^3.17.0",
     "moment": "^2.24.0",
     "uuid": "^3.3.2",
     "winston": "^3.2.1"
