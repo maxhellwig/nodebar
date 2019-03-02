@@ -2,7 +2,7 @@ import Base from "./Plugins/Base";
 
 const HEADER: string = JSON.stringify({ "version": 1, "stop_signal": 10, "cont_signal": 12, "click_events": true });
 
-const DEBUG: string | undefined = process.env.DEBUG;
+const DEBUG: boolean | undefined = process.env.DEBUG === "true";
 
 export default class App {
 
@@ -18,19 +18,17 @@ export default class App {
   }
 
   run() {
-    process.stdout.write(HEADER);
-    process.stdout.write("[");
+    console.log(HEADER);
+    console.log("[");
+    console.log("[]");
     this.plugins.forEach(function(plugin) {
       plugin.run();
     });
     setInterval(() => {
       let output: string;
       output = this.collectOutput(this.plugins);
-      if (DEBUG) {
-        console.log(output);
-      } else {
-        process.stdout.write(output);
-      }
+      // remove the first comma in array
+      console.log(`,[${output}]`.replace("\[,","\["));
       output = "";
     }, 1000);
   }
@@ -44,7 +42,7 @@ export default class App {
     let output: string = "";
     plugins.forEach((plugin) => {
       const pluginOutput = plugin.emit();
-      output += `[${pluginOutput}],`;
+      output += `,${pluginOutput}`;
     });
     return output;
   }

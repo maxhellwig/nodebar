@@ -8,7 +8,7 @@ describe("Update Plugin", () => {
     uptime = new Uptime("Uptime", 1);
   });
   it("returns mocked uptime", () => {
-    const expected = "0 days 01:00:01";
+    const expected = "4 days ";
     uptime.cycle();
     expect(uptime.full_text).to.be.equal(expected);
   });

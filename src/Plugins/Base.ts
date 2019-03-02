@@ -1,3 +1,5 @@
+const uuid = require("uuid/v1");
+
 export default interface NodebarPlugin {
   cycle(): void
 }
@@ -13,11 +15,21 @@ export class NotImplemented extends Error {
 
 export default class Base implements NodebarPlugin {
   full_text: string = "";
+  short_text: string = "";
+  color: string = "#ffffff";
+  background: string = "#000000";
+  min_width: number = 300;
+  align: string = "right";
+  urgent: boolean = false;
   name: string = "";
+  instance: string = "";
+  separator: boolean = true;
+  separator_block_width: number = 9;
   ticks: number = 1;
 
   constructor(name: string, ticks: number) {
     this.name = name;
+    this.instance = uuid();
     this.ticks = ticks;
   }
 
@@ -26,7 +38,10 @@ export default class Base implements NodebarPlugin {
   }
 
   emit(): string {
-    return JSON.stringify(this);
+    return JSON.stringify({
+      full_text: this.full_text,
+      name: this.name
+    });
   }
 
   run() {
@@ -40,4 +55,5 @@ export default class Base implements NodebarPlugin {
       }
     }, self.ticks * 1000);
   }
+
 }
