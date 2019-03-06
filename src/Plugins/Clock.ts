@@ -14,7 +14,7 @@ export default class Clock extends Base {
    */
   constructor(name: string, ticks: number, dateTimeFormat?: string) {
     super(name, ticks);
-    this.format = dateTimeFormat || "YYYY-MM-DD hh:mm:ss";
+    this.format = dateTimeFormat || "YYYY-MM-DD k:mm:ss";
   }
 
   getDateTime(): string {
