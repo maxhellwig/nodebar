@@ -1,3 +1,5 @@
+import * as winston from "winston";
+
 const uuid = require("uuid/v1");
 
 export default interface NodebarPlugin {
@@ -14,6 +16,9 @@ export class NotImplemented extends Error {
 }
 
 export default class Base implements NodebarPlugin {
+
+  private static logger: winston.Logger;
+
   full_text: string = "";
   short_text: string = "";
   color: string = "#ffffff";
@@ -31,6 +36,25 @@ export default class Base implements NodebarPlugin {
     this.name = name;
     this.instance = uuid();
     this.ticks = ticks;
+    Base.logger = winston.createLogger({
+      level: "info",
+      format: winston.format.json(),
+      defaultMeta: { service: "Plugin" },
+      transports: [
+        //
+        // - Write to all logs with level `info` and below to `combined.log`
+        // - Write all logs error (and below) to `error.log`.
+        //
+        new winston.transports.File({ filename: "error.log", level: "error" }),
+        new winston.transports.File({ filename: "combined.log" })
+      ]
+    });
+    if (process.env.NODE_ENV !== "production") {
+      Base.logger.add(new winston.transports.Console({
+        level: "debug",
+        format: winston.format.simple()
+      }));
+    }
   }
 
   cycle() {
@@ -59,4 +83,7 @@ export default class Base implements NodebarPlugin {
     }, self.ticks * 1000);
   }
 
+  toString(): string {
+    return JSON.stringify(this);
+  }
 }
