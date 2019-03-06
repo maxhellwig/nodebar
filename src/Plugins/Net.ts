@@ -1,6 +1,6 @@
 import Base from "./Base";
 import * as os from "os";
-import { NetworkInterfaceInfo } from "os";
+import { NetworkInterfaceInfo, NetworkInterfaceInfoIPv4, NetworkInterfaceInfoIPv6 } from "os";
 import { COLORS } from "../COLORS";
 
 export default class Net extends Base {
@@ -14,10 +14,14 @@ export default class Net extends Base {
     let concreteInterface: NetworkInterfaceInfo[];
     try {
       concreteInterface = allInterfaces[this.name];
-      this.full_text = `${this.name} ${concreteInterface[0].address}`;
+      const addressV4: NetworkInterfaceInfoIPv4 | NetworkInterfaceInfoIPv6 | undefined = concreteInterface.find((iface) => iface.family === "IPv4");
+      if (addressV4 !== undefined) {
+        this.full_text = `${this.name} ${addressV4.address}`;
+      }
       this.color = COLORS.GREEN;
+      this.background = COLORS.BLACK;
     } catch (e) {
-      this.full_text = `Network interface '${this.name}' not found!`;
+      this.full_text = `'${this.name}' not found or offline!`;
       this.short_text = `${this.name} not found!`;
       this.color = COLORS.WHITE;
       this.background = COLORS.RED;
