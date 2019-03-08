@@ -6,7 +6,7 @@ import Timeout = NodeJS.Timeout;
 const HEADER: string = JSON.stringify({ "version": 1, "stop_signal": 10, "cont_signal": 12, "click_events": true });
 
 process.on("uncaughtException", e => {
-  console.log(e);
+  App.appLogger.error(e);
   process.exit(1);
 });
 
@@ -20,7 +20,7 @@ export default class App {
 
   private readonly plugins: Array<Base>;
   private intervalHandler!: Timeout;
-  private static appLogger: winston.Logger;
+  public static appLogger: winston.Logger;
 
   /**
    *
