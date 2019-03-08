@@ -5,9 +5,8 @@
   "repository": "git@gitlab.hellbit.de:ichag/nodebar.git",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build:live",
+    "start": "tsc-watch --onSuccess 'node ./lib/index.js' --compiler typescript/bin/tsc",
     "build": "tsc",
-    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'tsc' && node lib/index.js",
     "test": "nyc --reporter=text mocha -r ts-node/register test/**/*.spec.ts"
   },
   "author": "Max Hellwig",
@@ -26,11 +25,11 @@
     "eslint-config-prettier": "4.1.0",
     "eslint-plugin-prettier": "3.0.1",
     "mocha": "^6.0.2",
-    "nodemon": "^1.18.10",
     "nyc": "^13.3.0",
     "prettier": "1.16.4",
     "sinon": "^7.2.5",
     "ts-node": "^8.0.2",
+    "tsc-watch": "^2.1.2",
     "typescript": "3.3.3333",
     "winston": "^3.2.1"
   },
