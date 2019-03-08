@@ -1,7 +1,7 @@
 import Base from "./Base";
 import * as os from "os";
 import { NetworkInterfaceInfo, NetworkInterfaceInfoIPv4, NetworkInterfaceInfoIPv6 } from "os";
-import { COLORS } from "../COLORS";
+import { COLORS } from "../config";
 
 export default class Net extends Base {
 
