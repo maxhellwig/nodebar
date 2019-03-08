@@ -1,4 +1,5 @@
 import * as winston from "winston";
+import { LOGPATH } from "../config";
 
 const uuid = require("uuid/v1");
 
@@ -17,7 +18,19 @@ export class NotImplemented extends Error {
 
 export default class Base implements NodebarPlugin {
 
-  private static logger: winston.Logger;
+  private static logger: winston.Logger = winston.createLogger({
+    level: "info",
+    format: winston.format.json(),
+    defaultMeta: { service: "Plugin" },
+    transports: [
+      //
+      // - Write to all logs with level `info` and below to `combined.log`
+      // - Write all logs error (and below) to `error.log`.
+      //
+      new winston.transports.File({ filename: LOGPATH + "/error.log", level: "error" }),
+      new winston.transports.File({ filename: LOGPATH + "/combined.log" })
+    ]
+  });
 
   full_text: string = "";
   short_text: string = "";
@@ -36,25 +49,6 @@ export default class Base implements NodebarPlugin {
     this.name = name;
     this.instance = uuid();
     this.ticks = ticks;
-    Base.logger = winston.createLogger({
-      level: "info",
-      format: winston.format.json(),
-      defaultMeta: { service: "Plugin" },
-      transports: [
-        //
-        // - Write to all logs with level `info` and below to `combined.log`
-        // - Write all logs error (and below) to `error.log`.
-        //
-        new winston.transports.File({ filename: "error.log", level: "error" }),
-        new winston.transports.File({ filename: "combined.log" })
-      ]
-    });
-    if (process.env.NODE_ENV !== "production") {
-      Base.logger.add(new winston.transports.Console({
-        level: "debug",
-        format: winston.format.simple()
-      }));
-    }
   }
 
   cycle() {
@@ -84,6 +78,11 @@ export default class Base implements NodebarPlugin {
   }
 
   toString(): string {
-    return JSON.stringify(this);
+    try {
+      return JSON.stringify(this);
+    } catch (e) {
+      Base.logger.error(e.message);
+      return JSON.stringify({});
+    }
   }
 }
