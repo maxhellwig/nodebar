@@ -34,7 +34,6 @@
     "winston": "^3.2.1"
   },
   "dependencies": {
-    "@sentry/node": "^4.6.4",
     "@types/moment": "^2.13.0",
     "moment": "^2.24.0",
     "uuid": "^3.3.2"
