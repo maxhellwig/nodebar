@@ -1,1 +1,1 @@
-export const LOGPATH = "/home/hellwig/.i3/logs";
+export const LOGPATH = process.env.HOME + "/.i3/logs";
