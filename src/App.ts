@@ -2,25 +2,16 @@ import Base from "./Plugins/Base";
 import NoPlugin from "./NoPlugin";
 import * as winston from "winston";
 import Timeout = NodeJS.Timeout;
+import { LOGPATH } from "./config";
 
 const HEADER: string = JSON.stringify({ "version": 1, "stop_signal": 10, "cont_signal": 12, "click_events": true });
-
-process.on("uncaughtException", e => {
-  App.appLogger.error(e);
-  process.exit(1);
-});
-
-process.on("unhandledRejection", e => {
-  console.log(e);
-  process.exit(1);
-});
 
 export default class App {
 
 
   private readonly plugins: Array<Base>;
   private intervalHandler!: Timeout;
-  public static appLogger: winston.Logger;
+  private appLogger: winston.Logger;
 
   /**
    *
@@ -29,17 +20,7 @@ export default class App {
   constructor(plugins: Array<Base>) {
 
     this.plugins = plugins;
-    App.appLogger = App.initiateLogger();
-    if (process.env.NODE_ENV !== "production") {
-      App.appLogger.add(new winston.transports.Console({
-        level: "debug",
-        format: winston.format.simple()
-      }));
-    }
-  }
-
-  static initiateLogger(): winston.Logger {
-    return winston.createLogger({
+    this.appLogger = winston.createLogger({
       level: "info",
       format: winston.format.json(),
       defaultMeta: { service: "App" },
@@ -48,8 +29,8 @@ export default class App {
         // - Write to all logs with level `info` and below to `combined.log`
         // - Write all logs error (and below) to `error.log`.
         //
-        new winston.transports.File({ filename: "error.log", level: "error" }),
-        new winston.transports.File({ filename: "combined.log" })
+        new winston.transports.File({ filename: LOGPATH + "/error.log", level: "error" }),
+        new winston.transports.File({ filename: LOGPATH + "/combined.log" })
       ]
     });
 
@@ -69,6 +50,7 @@ export default class App {
   }
 
   run() {
+    const self = this;
     console.log(HEADER);
     console.log("[");
     console.log("[]");
@@ -77,7 +59,7 @@ export default class App {
     }
     try {
       this.plugins.forEach(function(plugin) {
-        App.appLogger.debug(`${plugin.toString()}`);
+        self.appLogger.debug(`${plugin.toString()}`);
         plugin.run();
       });
       this.intervalHandler = setInterval(() => {
@@ -94,11 +76,11 @@ export default class App {
   }
 
   rerun(e: Error) {
-    App.appLogger.warn(`rerun() was called! An uncatched exception from a plugins run has been thrown!`);
-    App.appLogger.error(e);
-    App.appLogger.warn(`Clearing infinite loop Interval`);
+    this.appLogger.warn(`rerun() was called! An uncatched exception from a plugins run has been thrown!`);
+    this.appLogger.error(e);
+    this.appLogger.warn(`Clearing infinite loop Interval`);
     global.clearInterval(this.intervalHandler);
-    App.appLogger.warn(`Starting over!`);
+    this.appLogger.warn(`Starting over!`);
     this.run();
   }
 
