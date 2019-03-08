@@ -5,11 +5,84 @@ import Release from "./Plugins/OSRelease";
 import App from "./App";
 import Uptime from "./Plugins/Uptime";
 import Net from "./Plugins/Net";
+import * as winston from "winston";
+import { LOGPATH } from "./config";
 
+
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  defaultMeta: { service: "index" },
+  transports: [
+    //
+    // - Write to all logs with level `info` and below to `combined.log`
+    // - Write all logs error (and below) to `error.log`.
+    //
+    new winston.transports.File({ filename: LOGPATH + "/error.log", level: "error" }),
+    new winston.transports.File({ filename: LOGPATH + "/combined.log" })
+  ]
+});
+
+function handleExit(msg: string) {
+  logger.error(msg);
+}
+
+process.on("beforeExit", function() {
+  handleExit("beforeExit called");
+});
+
+process.on("SIGTERM", () => {
+  handleExit("SIGTERM received!");
+  process.exit(1);
+});
+
+
+process.on("SIGINT", () => {
+  handleExit("SIGINT received!");
+  process.exit(1);
+
+});
+process.on("SIGHUP", () => {
+  handleExit("SIGHUP received!");
+  process.exit(1);
+
+});
+
+process.on("SIGWINCH", () => {
+  handleExit("SIGWINCH received!");
+  process.exit(1);
+
+});
+process.on("SIGBUS", () => {
+  handleExit("SIGBUS received!");
+  process.exit(1);
+
+});
+
+process.on("SIGFPE", () => {
+  handleExit("SIGFPE received!");
+  process.exit(1);
+
+});
+
+process.on("SIGSEGV", () => {
+  handleExit("SIGSEGV received!");
+  process.exit(1);
+
+});
+process.on("SIGILL", () => {
+  handleExit("SIGILL received!");
+  process.exit(1);
+
+});
+
+process.on("uncaughtException", (err) => {
+  handleExit(`Caught exception: ${err}\n`);
+});
 
 function main() {
   const plugins: Array<Base> = [];
-  const enp0s3: Base = new Net("wlp4s0", 5);
+  const enp0s3: Base = new Net("enp0s3", 5);
   const release: Base = new Release("Release", 3600);
   const hostname: Base = new Hostname("Hostname", 3600);
   const uptime: Base = new Uptime("Uptime", 1);
