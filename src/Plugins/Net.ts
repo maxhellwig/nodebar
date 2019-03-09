@@ -24,7 +24,7 @@ export default class Net extends Base {
       this.full_text = `'${this.name}' not found or offline!`;
       this.short_text = `${this.name} not found!`;
       this.color = COLORS.WHITE;
-      this.background = COLORS.RED;
+      this.background = COLORS.CRITICAL;
     }
   }
 }

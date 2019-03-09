@@ -9,6 +9,6 @@ export default class NoPlugin extends Base {
   cycle() {
     this.full_text = NOPLUGIN_FULLTEST;
     this.short_text = NOPLUGIN_SHORTTEST;
-    this.color = COLORS.RED;
+    this.color = COLORS.CRITICAL;
   }
 }
