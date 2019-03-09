@@ -59,6 +59,7 @@ export default class App {
     }
     try {
       this.plugins.forEach(function(plugin) {
+        self.appLogger.info("Starting cycling for plugin " + plugin.name);
         self.appLogger.debug(`${plugin.toString()}`);
         plugin.run();
       });
