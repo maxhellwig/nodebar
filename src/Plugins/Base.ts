@@ -18,7 +18,7 @@ export class NotImplemented extends Error {
 
 export default class Base implements NodebarPlugin {
 
-  private static logger: winston.Logger = winston.createLogger({
+  protected static logger: winston.Logger = winston.createLogger({
     level: "info",
     format: winston.format.json(),
     defaultMeta: { service: "Plugin" },
