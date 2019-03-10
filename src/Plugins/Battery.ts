@@ -29,8 +29,6 @@ export default class Battery extends Base {
       fsPromises.readFile(path, "utf8").then((res) => {
         resolve(res);
       }).catch((e) => {
-        Base.logger.error("Could not read battery capacity");
-        Base.logger.error(e);
         reject(e);
       });
     }));
@@ -38,23 +36,34 @@ export default class Battery extends Base {
   }
 
   async cycle() {
-    const capacity = parseInt(await this.getValue(this.capacityPath));
-    let status = await this.getValue(this.statusPath);
-    status = status.replace(/\n/, "");
-    this.full_text = `${status} ${capacity}%`;
-    this.short_text = `${capacity}%`;
+    let capacity: number;
+    let status: string = "";
+    try {
+      capacity = parseInt(await this.getValue(this.capacityPath));
+      status = await this.getValue(this.statusPath);
+      status = status.replace(/\n/, "");
+      this.full_text = `${status} ${capacity}%`;
+      this.short_text = `${capacity}%`;
 
-    if (capacity < this.criticalCapacity) {
-      this.color = this.criticalColor;
-      this.background = this.criticalBackground;
-    } else if (capacity < this.warningCapacity) {
-      this.color = this.warningColor;
-      this.background = this.warningBackground;
-    } else {
+      if (capacity < this.criticalCapacity) {
+        this.color = this.criticalColor;
+        this.background = this.criticalBackground;
+      } else if (capacity < this.warningCapacity) {
+        this.color = this.warningColor;
+        this.background = this.warningBackground;
+      } else {
+        this.color = COLORS.WHITE;
+        this.background = COLORS.BLACK;
+      }
+    } catch (e) {
+      Base.logger.error("Could not read battery capacity");
+      Base.logger.error(e);
+      const msg = `${this.battery} not found!`;
+      this.full_text = msg;
+      this.short_text = msg;
       this.color = COLORS.WHITE;
-      this.background = COLORS.BLACK;
+      this.background = COLORS.CRITICAL;
     }
-
   }
 }
 
