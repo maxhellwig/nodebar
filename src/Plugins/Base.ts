@@ -1,5 +1,5 @@
 import * as winston from "winston";
-import { LOGPATH } from "../config";
+import { logger } from "../logger";
 
 const uuid = require("uuid/v1");
 
@@ -18,19 +18,7 @@ export class NotImplemented extends Error {
 
 export default class Base implements NodebarPlugin {
 
-  protected static logger: winston.Logger = winston.createLogger({
-    level: "info",
-    format: winston.format.json(),
-    defaultMeta: { service: "Plugin" },
-    transports: [
-      //
-      // - Write to all logs with level `info` and below to `combined.log`
-      // - Write all logs error (and below) to `error.log`.
-      //
-      new winston.transports.File({ filename: LOGPATH + "/error.log", level: "error" }),
-      new winston.transports.File({ filename: LOGPATH + "/combined.log" })
-    ]
-  });
+  protected static logger: winston.Logger = logger;
 
   full_text: string = "";
   short_text: string = "";
