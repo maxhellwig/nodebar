@@ -51,13 +51,18 @@ export default class App {
 
   run() {
     const self = this;
+    self.appLogger.info("Printing header");
     console.log(HEADER);
+    self.appLogger.info("Start infinite json array");
     console.log("[");
+    self.appLogger.info("First entry is empty");
     console.log("[]");
     if (this.plugins.length === 0) {
+      self.appLogger.info("No Plugins found");
       this.plugins.push(new NoPlugin("No plugins!", 45000));
     }
     try {
+      self.appLogger.info("Iterating through plugins");
       this.plugins.forEach(function(plugin) {
         self.appLogger.info("Starting cycling for plugin " + plugin.name);
         self.appLogger.debug(`${plugin.toString()}`);
