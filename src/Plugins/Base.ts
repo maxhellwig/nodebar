@@ -3,7 +3,7 @@ import { LOGPATH } from "../config";
 
 const uuid = require("uuid/v1");
 
-export default interface NodebarPlugin {
+interface NodebarPlugin {
   cycle(): void
 }
 
