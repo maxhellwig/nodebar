@@ -25,61 +25,65 @@ const logger = winston.createLogger({
   ]
 });
 
-function handleExit(msg: string) {
+function handleExit(msg: string, exitCode: number, restart: boolean) {
   logger.error(msg);
+  process.exitCode = exitCode;
+  if(restart) {
+    main();
+  } else {
+    process.exit(exitCode);
+  }
 }
 
-process.on("beforeExit", function() {
-  handleExit("beforeExit called");
+process.on("exit", function(code) {
+  handleExit("exit received!", 1, false);
 });
 
 process.on("SIGTERM", () => {
-  handleExit("SIGTERM received!");
-  process.exit(1);
+  handleExit("SIGTERM received!", 1, false);
 });
 
 
 process.on("SIGINT", () => {
-  handleExit("SIGINT received!");
-  process.exit(1);
+  handleExit("SIGINT received!", 1, false);
 
 });
 process.on("SIGHUP", () => {
-  handleExit("SIGHUP received!");
-  process.exit(1);
+  handleExit("SIGHUP received!", 0, true);
 
 });
 
 process.on("SIGWINCH", () => {
-  handleExit("SIGWINCH received!");
-  process.exit(1);
+  handleExit("SIGWINCH received!", 0, true);
 
 });
+
+process.on("SIGPIPE", () => {
+  handleExit("SIGPIPE received!", 0, true);
+
+});
+
 process.on("SIGBUS", () => {
-  handleExit("SIGBUS received!");
-  process.exit(1);
+  handleExit("SIGBUS received!", 0, true);
 
 });
 
 process.on("SIGFPE", () => {
-  handleExit("SIGFPE received!");
-  process.exit(1);
+  handleExit("SIGFPE received!", 0, true);
 
 });
 
 process.on("SIGSEGV", () => {
-  handleExit("SIGSEGV received!");
-  process.exit(1);
+  handleExit("SIGSEGV received!", 0, true);
 
 });
 process.on("SIGILL", () => {
-  handleExit("SIGILL received!");
-  process.exit(1);
+  handleExit("SIGILL received!", 0, true);
 
 });
 
 process.on("uncaughtException", (err) => {
-  handleExit(`Caught exception: ${err}\n`);
+  handleExit("uncaughtException", 0, true);
 });
 
 function main() {
@@ -92,8 +96,9 @@ function main() {
   const uptime: Base = new Uptime("Uptime", 1);
   const clock: Base = new Clock("Clock", 1);
   plugins.push(enp0s3, release, hostname, battery0, battery1, uptime, clock);
-  const app = new App(plugins);
   logger.info("Start nodebar");
+  const app = new App(plugins);
+  logger.debug(app);
   app.run();
 }
 
