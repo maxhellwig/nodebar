@@ -25,7 +25,7 @@ function main() {
   logger.info("Start nodebar");
   app.setPlugins(plugins);
   logger.debug(app);
-  app.run();
+  app.run(false);
 }
 
 main();

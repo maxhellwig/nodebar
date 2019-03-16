@@ -12,7 +12,6 @@ function handleExit(msg: string, exitCode: number, restart: boolean) {
   logger.error(msg);
   process.exitCode = exitCode;
   if (restart) {
-
     app.rerun();
   } else {
     process.exit(exitCode);
@@ -24,12 +23,12 @@ process.on("exit", function(code) {
 });
 
 process.on("SIGTERM", () => {
-  handleExit("SIGTERM received!", 1, false);
+  handleExit("SIGTERM received!", 0, false);
 });
 
 
 process.on("SIGINT", () => {
-  handleExit("SIGINT received!", 1, false);
+  handleExit("SIGINT received!", 0, false);
 
 });
 process.on("SIGHUP", () => {
@@ -119,14 +118,17 @@ export default class App {
     return output;
   }
 
-  run() {
+  run(printHeader: boolean) {
     const self = this;
-    self.appLogger.info("Printing header");
-    console.log(HEADER);
-    self.appLogger.info("Start infinite json array");
-    console.log("[");
-    self.appLogger.info("First entry is empty");
-    console.log("[]");
+    if (!printHeader) {
+      self.appLogger.info("Printing header");
+      console.log(HEADER);
+      self.appLogger.info("Start infinite json array");
+      console.log("[");
+      self.appLogger.info("First entry is empty");
+      console.log("[]");
+    }
+
     if (this._plugins.length === 0) {
       self.appLogger.info("No Plugins found");
       this._plugins.push(new NoPlugin("No plugins!", 45000));
@@ -159,7 +161,7 @@ export default class App {
     this.appLogger.warn(`Clearing infinite loop Interval`);
     global.clearInterval(this.intervalHandler);
     this.appLogger.warn(`Starting over!`);
-    this.run();
+    this.run(true);
   }
 
 }
