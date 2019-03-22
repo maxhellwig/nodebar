@@ -1,7 +1,7 @@
-import Base from "./Base";
+import BasePlugin from "./BasePlugin";
 import moment = require("moment");
 
-export default class Clock extends Base {
+export default class Clock extends BasePlugin {
 
   format: string = "YYYY-MM-DD hh:mm:ss";
 

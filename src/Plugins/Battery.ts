@@ -1,10 +1,10 @@
-import Base from "./Base";
+import BasePlugin from "./BasePlugin";
 import { COLORS } from "../config";
 import fs from "fs";
 
 const fsPromises = fs.promises;
 
-export default class Battery extends Base {
+export default class Battery extends BasePlugin {
 
   private readonly batteryBasePath: string = "/sys/class/power_supply";
   private readonly battery: string;
@@ -56,8 +56,8 @@ export default class Battery extends Base {
         this.background = COLORS.BLACK;
       }
     } catch (e) {
-      Base.logger.error("Could not read battery capacity");
-      Base.logger.error(e);
+      BasePlugin.logger.error("Could not read battery capacity");
+      BasePlugin.logger.error(e);
       const msg = `${this.battery} not found!`;
       this.full_text = msg;
       this.short_text = msg;

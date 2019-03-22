@@ -1,9 +1,9 @@
-import Base from "./Base";
+import BasePlugin from "./BasePlugin";
 import * as os from "os";
 import { NetworkInterfaceInfo, NetworkInterfaceInfoIPv4, NetworkInterfaceInfoIPv6 } from "os";
 import { COLORS } from "../config";
 
-export default class Net extends Base {
+export default class Net extends BasePlugin {
 
   constructor(name: string, ticks: number) {
     super(name, ticks);

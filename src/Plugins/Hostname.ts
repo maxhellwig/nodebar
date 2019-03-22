@@ -1,7 +1,7 @@
-import Base from "./Base";
+import BasePlugin from "./BasePlugin";
 import * as os from "os";
 
-export default class Hostname extends Base {
+export default class Hostname extends BasePlugin {
 
   cycle() {
     this.full_text = os.hostname();

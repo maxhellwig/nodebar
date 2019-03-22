@@ -3,9 +3,25 @@ import { logger } from "../logger";
 
 const uuid = require("uuid/v1");
 
-interface NodebarPlugin {
+export interface Updateable {
+  full_text: string;
+  short_text: string;
+  color: string;
+  background: string;
+  min_width: number;
+  align: string;
+  urgent: boolean;
+  name: string;
+  instance: string;
+  separator: boolean;
+  separator_block_width: number;
+  ticks: number;
+
   cycle(): void
+
+  emit(): string
 }
+
 
 export class NotImplemented extends Error {
   constructor(message: string) {
@@ -16,7 +32,7 @@ export class NotImplemented extends Error {
   }
 }
 
-export default class Base implements NodebarPlugin {
+export default class BasePlugin implements Updateable {
 
   protected static logger: winston.Logger = logger;
 
@@ -33,9 +49,9 @@ export default class Base implements NodebarPlugin {
   separator_block_width: number = 9;
   ticks: number = 1;
 
-  constructor(name: string, ticks: number) {
+  constructor(name: string, ticks: number, customUuid?: string) {
     this.name = name;
-    this.instance = uuid();
+    this.instance = customUuid || uuid();
     this.ticks = ticks;
   }
 
@@ -66,11 +82,6 @@ export default class Base implements NodebarPlugin {
   }
 
   toString(): string {
-    try {
-      return JSON.stringify(this);
-    } catch (e) {
-      Base.logger.error(e.message);
-      return JSON.stringify({});
-    }
+    return JSON.stringify(this);
   }
 }

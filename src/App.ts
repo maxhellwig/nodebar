@@ -1,4 +1,4 @@
-import Base from "./Plugins/Base";
+import BasePlugin from "./Plugins/BasePlugin";
 import NoPlugin from "./NoPlugin";
 import * as winston from "winston";
 import Timeout = NodeJS.Timeout;
@@ -85,20 +85,20 @@ process.on("uncaughtException", (err) => {
 
 export default class App {
 
-  setPlugins(value: Array<Base>): void {
+  setPlugins(value: Array<BasePlugin>): void {
     this._plugins = value;
   }
 
 
-  private _plugins: Array<Base>;
+  private _plugins: Array<BasePlugin>;
   private intervalHandler!: Timeout;
   private appLogger: winston.Logger;
 
   /**
    *
-   * @param {Array<Base>} plugins
+   * @param {Array<BasePlugin>} plugins
    */
-  constructor(plugins: Array<Base>) {
+  constructor(plugins: Array<BasePlugin>) {
 
     this._plugins = plugins;
     this.appLogger = logger;
@@ -107,9 +107,9 @@ export default class App {
 
   /**
    *
-   * @param {Array<Base>} plugins
+   * @param {Array<BasePlugin>} plugins
    */
-  collectOutput(plugins: Array<Base>): string {
+  collectOutput(plugins: Array<BasePlugin>): string {
     let output: string = "";
     plugins.forEach((plugin) => {
       const pluginOutput = plugin.emit();

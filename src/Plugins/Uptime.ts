@@ -1,8 +1,8 @@
-import Base from "./Base";
+import BasePlugin from "./BasePlugin";
 import * as os from "os";
 import moment = require("moment");
 
-export default class Uptime extends Base {
+export default class Uptime extends BasePlugin {
 
   private _uptime: number = 0;
 
