@@ -1,4 +1,4 @@
-import Hostname from "../src/Plugins/Hostname";
+import Hostname from "../../src/Plugins/Hostname";
 import { expect } from "chai";
 import * as os from "os";
 

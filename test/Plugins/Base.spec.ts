@@ -1,4 +1,4 @@
-import BasePlugin, { NotImplemented } from "../src/Plugins/BasePlugin";
+import BasePlugin, { NotImplemented } from "../../src/Plugins/BasePlugin";
 import { expect } from "chai";
 import sinon, { SinonFakeTimers } from "sinon";
 

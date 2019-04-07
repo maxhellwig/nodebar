@@ -1,4 +1,4 @@
-import Uptime from "../src/Plugins/Uptime";
+import Uptime from "../../src/Plugins/Uptime";
 import { expect } from "chai";
 import sinon from "sinon";
 
