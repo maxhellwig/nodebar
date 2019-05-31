@@ -1,30 +1,15 @@
 import * as winston from "winston";
 import { logger } from "../logger";
 
-const uuid = require("uuid/v1");
+import uuid from "uuid/v1";
 
-export interface Updateable {
-  full_text: string;
-  short_text: string;
-  color: string;
-  background: string;
-  min_width: number;
-  align: string;
-  urgent: boolean;
-  name: string;
-  instance: string;
-  separator: boolean;
-  separator_block_width: number;
-  ticks: number;
-
-  cycle(): void
-
-  emit(): string
+interface Updateable {
+  cycle(): void;
+  emit(): string;
 }
 
-
 export class NotImplemented extends Error {
-  constructor(message: string) {
+  public constructor(message: string) {
     super();
     Error.captureStackTrace(this, this.constructor);
     this.name = "NotImplemented";
@@ -33,35 +18,35 @@ export class NotImplemented extends Error {
 }
 
 export default class BasePlugin implements Updateable {
-
   protected static logger: winston.Logger = logger;
 
-  full_text: string = "";
-  short_text: string = "";
-  color: string = "#ffffff";
-  background: string = "#000000";
-  min_width: number = 300;
-  align: string = "right";
-  urgent: boolean = false;
-  name: string = "";
-  instance: string = "";
-  separator: boolean = true;
-  separator_block_width: number = 9;
-  ticks: number = 1;
+  protected fullText: string = "";
+  protected shortText: string = "";
+  protected color: string = "#ffffff";
+  protected background: string = "#000000";
+  protected minWidth: number = 300;
+  protected align: string = "right";
+  protected urgent: boolean = false;
+  public name: string = "";
+  protected instance: string = "";
+  protected separator: boolean = true;
+  protected separatorBlockWidth: number = 9;
+  protected ticks: number = 1;
 
-  constructor(name: string, ticks: number, customUuid?: string) {
+  public constructor(name: string, ticks: number, customUuid?: string) {
     this.name = name;
     this.instance = customUuid || uuid();
     this.ticks = ticks;
   }
 
-  cycle() {
+  public cycle(): void {
     throw new NotImplemented("Please implement me");
   }
 
-  emit(): string {
+  public emit(): string {
     return JSON.stringify({
-      full_text: this.full_text,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      full_text: this.fullText,
       name: this.name,
       color: this.color,
       background: this.background,
@@ -69,10 +54,10 @@ export default class BasePlugin implements Updateable {
     });
   }
 
-  run() {
+  public run(): void {
     const self = this;
     self.cycle();
-    setInterval(() => {
+    setInterval((): void => {
       try {
         self.cycle();
       } catch (e) {
@@ -81,7 +66,7 @@ export default class BasePlugin implements Updateable {
     }, self.ticks * 1000);
   }
 
-  toString(): string {
+  public toString(): string {
     return JSON.stringify(this);
   }
 }

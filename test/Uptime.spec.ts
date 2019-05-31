@@ -12,6 +12,6 @@ describe("Update Plugin", () => {
     const mockedUptime = sinon.stub(uptime, "uptime").returns(345600);
     uptime.cycle();
 
-    expect(uptime.full_text).to.be.equal(expected);
+    expect(uptime.fullText).to.be.equal(expected);
   });
 });

@@ -1,14 +1,17 @@
 import BasePlugin from "./Plugins/BasePlugin";
 import NoPlugin from "./NoPlugin";
 import * as winston from "winston";
-import Timeout = NodeJS.Timeout;
 import { app } from "./index";
 import { logger } from "./logger";
 
-const HEADER: string = JSON.stringify({ "version": 1, "stop_signal": 10, "cont_signal": 12, "click_events": true });
+const HEADER: string = JSON.stringify({
+  version: 1,
+  stopSignal: 10,
+  contSignal: 12,
+  clickEvents: true
+});
 
-
-function handleExit(msg: string, exitCode: number, restart: boolean) {
+function handleExit(msg: string, exitCode: number, restart: boolean): void {
   logger.error(msg);
   process.exitCode = exitCode;
   if (restart) {
@@ -18,107 +21,95 @@ function handleExit(msg: string, exitCode: number, restart: boolean) {
   }
 }
 
-process.on("exit", function(code) {
+process.on("exit", (): void => {
   handleExit("exit received!", 1, false);
 });
 
-process.on("SIGTERM", () => {
+process.on("SIGTERM", (): void => {
   handleExit("SIGTERM received!", 0, false);
 });
 
-
-process.on("SIGINT", () => {
+process.on("SIGINT", (): void => {
   handleExit("SIGINT received!", 0, false);
-
 });
-process.on("SIGHUP", () => {
+process.on("SIGHUP", (): void => {
   handleExit("SIGHUP received!", 0, true);
-
 });
 
-process.on("SIGWINCH", () => {
+process.on("SIGWINCH", (): void => {
   handleExit("SIGWINCH received!", 0, true);
-
 });
 
-process.on("SIGPIPE", () => {
+process.on("SIGPIPE", (): void => {
   handleExit("SIGPIPE received!", 0, true);
 });
 
-process.on("SIGQUIT", () => {
+process.on("SIGQUIT", (): void => {
   handleExit("SIGQUIT received!", 0, true);
 });
 
-process.on("SIGBUS", () => {
+process.on("SIGBUS", (): void => {
   handleExit("SIGBUS received!", 0, true);
-
 });
 
-process.on("SIGFPE", () => {
+process.on("SIGFPE", (): void => {
   handleExit("SIGFPE received!", 0, true);
-
 });
 
-process.on("SIGSEGV", () => {
+process.on("SIGSEGV", (): void => {
   handleExit("SIGSEGV received!", 0, true);
-
 });
-process.on("SIGILL", () => {
+process.on("SIGILL", (): void => {
   handleExit("SIGILL received!", 0, true);
-
 });
-process.on("SIGABRT", () => {
+process.on("SIGABRT", (): void => {
   handleExit("SIGABRT received!", 0, true);
 });
 
-process.on("SIGCONT", () => {
+process.on("SIGCONT", (): void => {
   handleExit("SIGCONT received!", 0, true);
 });
 
-process.on("SIGUSR2", () => {
+process.on("SIGUSR2", (): void => {
   handleExit("SIGUSR2 received!", 0, true);
 });
 
-process.on("uncaughtException", (err) => {
+process.on("uncaughtException", (): void => {
   handleExit("uncaughtException", 0, false);
 });
 
 export default class App {
-
-  setPlugins(value: Array<BasePlugin>): void {
+  public setPlugins(value: BasePlugin[]): void {
     this._plugins = value;
   }
 
-
-  private _plugins: Array<BasePlugin>;
-  private intervalHandler!: Timeout;
+  private _plugins: BasePlugin[];
+  private intervalHandler!: any;
   private appLogger: winston.Logger;
 
   /**
    *
    * @param {Array<BasePlugin>} plugins
    */
-  constructor(plugins: Array<BasePlugin>) {
-
+  public constructor(plugins: BasePlugin[]) {
     this._plugins = plugins;
     this.appLogger = logger;
-
   }
 
   /**
    *
    * @param {Array<BasePlugin>} plugins
    */
-  collectOutput(plugins: Array<BasePlugin>): string {
-    let output: string = "";
-    plugins.forEach((plugin) => {
+  private collectOutput(plugins: BasePlugin[]): string {
+    let output = "";
+    plugins.forEach((plugin): void => {
       const pluginOutput = plugin.emit();
       output += `,${pluginOutput}`;
     });
     return output;
   }
 
-  run(printHeader: boolean) {
+  public run(printHeader: boolean): void {
     const self = this;
     if (!printHeader) {
       self.appLogger.info("Printing header");
@@ -135,33 +126,35 @@ export default class App {
     }
     try {
       self.appLogger.info("Iterating through plugins");
-      this._plugins.forEach(function(plugin) {
+      this._plugins.forEach(function(plugin: BasePlugin): void {
         self.appLogger.info("Starting cycling for plugin " + plugin.name);
         self.appLogger.debug(`${plugin.toString()}`);
         plugin.run();
       });
-      this.intervalHandler = setInterval(() => {
+      this.intervalHandler = setInterval((): void => {
         let output: string;
         output = this.collectOutput(this._plugins);
         // remove the first comma in array
-        console.log(`,[${output}]`.replace("\[,", "\["));
+        console.log(`,[${output}]`.replace("[,", "["));
         output = "";
       }, 1000);
     } catch (e) {
       this.rerun(e);
     }
-
   }
 
-  rerun(e?: Error) {
-    this.appLogger.warn(`rerun() was called! An uncatched exception from a plugins run has been thrown!`);
+  public rerun(e?: Error): void {
+    this.appLogger.warn(
+      `rerun() was called! An uncatched exception from a plugins run has been thrown!`
+    );
     if (e instanceof Error) {
       this.appLogger.error(e);
     }
     this.appLogger.warn(`Clearing infinite loop Interval`);
-    global.clearInterval(this.intervalHandler);
+    if (this.intervalHandler) {
+      clearInterval(this.intervalHandler);
+    }
     this.appLogger.warn(`Starting over!`);
     this.run(true);
   }
-
 }

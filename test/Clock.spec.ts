@@ -16,6 +16,6 @@ describe("Clock cycle prints same datetime string", () => {
       return +Date.parse(mockedDateAndTime);
     };
     clock.cycle();
-    expect(clock.full_text).to.equal(mockedDateAndTime);
+    expect(clock.fullText).to.equal(mockedDateAndTime);
   });
 });

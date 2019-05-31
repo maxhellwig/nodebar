@@ -14,12 +14,12 @@ describe("Base plugin", () => {
   });
   it("Returns a json representation of i3bar relevant information for emit()", () => {
     const expected =
-      "{\"full_text\":\"\",\"name\":\"Base\",\"color\":\"#ffffff\",\"background\":\"#000000\",\"urgent\":false}";
+      "{\"fullText\":\"\",\"name\":\"Base\",\"color\":\"#ffffff\",\"background\":\"#000000\",\"urgent\":false}";
     expect(base.emit()).to.be.equal(expected);
   });
   it("Returns a json representation of itself for toString()", () => {
     const expected =
-      "{\"full_text\":\"\",\"short_text\":\"\",\"color\":\"#ffffff\",\"background\":\"#000000\",\"min_width\":300,\"align\":\"right\",\"urgent\":false,\"name\":\"Base\",\"instance\":\"abc\",\"separator\":true,\"separator_block_width\":9,\"ticks\":1}";
+      "{\"fullText\":\"\",\"shortText\":\"\",\"color\":\"#ffffff\",\"background\":\"#000000\",\"minWidth\":300,\"align\":\"right\",\"urgent\":false,\"name\":\"Base\",\"instance\":\"abc\",\"separator\":true,\"separatorBlockWidth\":9,\"ticks\":1}";
 
     expect(base.toString()).to.be.equal(expected);
   });

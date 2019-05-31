@@ -1,14 +1,13 @@
 import BasePlugin from "./Plugins/BasePlugin";
 import { COLORS } from "./config";
 
-export const NOPLUGIN_FULLTEST: string = "No plugins found!";
-export const NOPLUGIN_SHORTTEST: string = "No plugins!";
+export const NOPLUGIN_FULLTEST = "No plugins found!";
+export const NOPLUGIN_SHORTTEST = "No plugins!";
 
 export default class NoPlugin extends BasePlugin {
-
-  cycle() {
-    this.full_text = NOPLUGIN_FULLTEST;
-    this.short_text = NOPLUGIN_SHORTTEST;
+  public cycle(): void {
+    this.fullText = NOPLUGIN_FULLTEST;
+    this.shortText = NOPLUGIN_SHORTTEST;
     this.color = COLORS.CRITICAL;
   }
 }

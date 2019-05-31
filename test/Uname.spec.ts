@@ -7,6 +7,6 @@ describe("Cycle of Hostname", () => {
     const currentHostname = os.hostname();
     const uname = new Hostname("Hostname", 1);
     uname.cycle();
-    expect(uname.full_text).to.equal(currentHostname);
+    expect(uname.fullText).to.equal(currentHostname);
   });
 });

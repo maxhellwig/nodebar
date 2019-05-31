@@ -3,20 +3,18 @@ import * as os from "os";
 import moment = require("moment");
 
 export default class Uptime extends BasePlugin {
-
   private _uptime: number = 0;
 
-  get uptime(): number {
+  public get uptime(): number {
     return this._uptime;
   }
 
-  set uptime(value: number) {
+  public set uptime(value: number) {
     this._uptime = value;
   }
 
-  constructor(name: string, ticks: number) {
+  public constructor(name: string, ticks: number) {
     super(name, ticks);
-
   }
 
   /**
@@ -29,38 +27,39 @@ export default class Uptime extends BasePlugin {
     if (isOver) {
       this.background = "#ff0000";
       this.urgent = true;
-      this.full_text = this.full_text + " Please restart your system!";
+      this.fullText = this.fullText + " Please restart your system!";
     }
   }
 
-
   private static pad(input: number): string {
-    if(input < 10) {
-      return "0"+input
+    if (input < 10) {
+      return "0" + input;
     } else {
       return input.toString();
     }
   }
 
-  private static formatDateTime(uptime: any): string {
+  private static formatDateTime(uptime: moment.Duration): string {
     const days = uptime.days();
     const hours = uptime.hours();
     const minutes = uptime.minutes();
     const seconds = uptime.seconds();
 
-    return `${days} days ${Uptime.pad(hours)}:${Uptime.pad(minutes)}:${Uptime.pad(seconds)}`
+    return `${days} days ${Uptime.pad(hours)}:${Uptime.pad(
+      minutes
+    )}:${Uptime.pad(seconds)}`;
   }
 
   /**
    * Reads current update using the os.uptime() methode provided by nodejs.
-   * For full_text it formats the time to inform the user in a humanized ways instead of the number of seconds since system start.
-   * For short_text it prints just the number of seconds.
+   * For fullText it formats the time to inform the user in a humanized ways instead of the number of seconds since system start.
+   * For shortText it prints just the number of seconds.
    */
-  cycle(): void {
+  public cycle(): void {
     this.uptime = os.uptime();
     const momentDuration = moment.duration(this.uptime, "seconds");
-    this.full_text = Uptime.formatDateTime(momentDuration);
-    this.short_text = os.uptime().toString();
+    this.fullText = Uptime.formatDateTime(momentDuration);
+    this.shortText = os.uptime().toString();
     this.handleUptimeOverAYear();
   }
 }

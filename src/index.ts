@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// eslint-disable-next-line no-unused-vars
 import BasePlugin from "./Plugins/BasePlugin";
 import Clock from "./Plugins/Clock";
 import Hostname from "./Plugins/Hostname";
@@ -11,8 +12,8 @@ import { logger } from "./logger";
 
 export const app: App = new App([]);
 
-function main() {
-  const plugins: Array<BasePlugin> = [];
+const main = (): void => {
+  const plugins: BasePlugin[] = [];
   const enp0s3: BasePlugin = new Net("enp0s3", 5);
   const release: BasePlugin = new Release("Release", 3600);
   const hostname: BasePlugin = new Hostname("Hostname", 3600);
@@ -25,6 +26,6 @@ function main() {
   app.setPlugins(plugins);
   logger.debug(app);
   app.run(false);
-}
+};
 
 main();
