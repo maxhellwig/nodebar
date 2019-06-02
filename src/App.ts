@@ -7,8 +7,11 @@ import readline from "readline";
 
 const HEADER: string = JSON.stringify({
   version: 1,
+  // eslint-disable-next-line @typescript-eslint/camelcase,@typescript-eslint/camelcase
   stop_signal: 10,
+  // eslint-disable-next-line @typescript-eslint/camelcase
   cont_signal: 12,
+  // eslint-disable-next-line @typescript-eslint/camelcase
   click_events: true
 });
 
@@ -137,7 +140,6 @@ export default class App {
 
   private _plugins: BasePlugin[];
   private intervalHandler!: any;
-  private appLogger: winston.Logger;
 
   /**
    *
@@ -145,19 +147,18 @@ export default class App {
    */
   public constructor(plugins: BasePlugin[]) {
     this._plugins = plugins;
-    this.appLogger = logger;
 
     rl.on(
       "line",
       (line): void => {
         try {
           if (line != "[") {
-            this.appLogger.info(App.prepareClickEventLine(line));
+            logger.info(App.prepareClickEventLine(line));
             const event = JSON.parse(App.prepareClickEventLine(line));
             this.onPluginClick(event.name, event.instance, event.button);
           }
         } catch (e) {
-          this.appLogger.error(
+          logger.error(
             `Failed to parse click event ${e} \n message was ${line}`
           );
         }
@@ -171,7 +172,7 @@ export default class App {
    * @returns string
    */
   private static prepareClickEventLine(line: string): string {
-    return line.trim().replace(new RegExp("^,"), "")
+    return line.trim().replace(new RegExp("^,"), "");
   }
 
   /**
@@ -195,12 +196,12 @@ export default class App {
         try {
           plugin.onClick(button);
         } catch (e) {
-          this.appLogger.error(e);
+          logger.error(e);
         }
         return;
       }
     }
-    this.appLogger.error(
+    logger.error(
       `Click by unregistered plugin "${name}" instance "${instance}"`
     );
   }
@@ -208,23 +209,23 @@ export default class App {
   public run(printHeader: boolean): void {
     const self = this;
     if (!printHeader) {
-      self.appLogger.info("Printing header");
+      logger.info("Printing header");
       console.log(HEADER);
-      self.appLogger.info("Start infinite json array");
+      logger.info("Start infinite json array");
       console.log("[");
-      self.appLogger.info("First entry is empty");
+      logger.info("First entry is empty");
       console.log("[]");
     }
 
     if (this._plugins.length === 0) {
-      self.appLogger.info("No Plugins found");
+      logger.info("No Plugins found");
       this._plugins.push(new NoPlugin("No plugins!", 45000));
     }
     try {
-      self.appLogger.info("Iterating through plugins");
+      logger.info("Iterating through plugins");
       this._plugins.forEach(function(plugin: BasePlugin): void {
-        self.appLogger.info("Starting cycling for plugin " + plugin.name);
-        self.appLogger.debug(`${plugin.toString()}`);
+        logger.info("Starting cycling for plugin " + plugin.name);
+        logger.debug(`${plugin.toString()}`);
         plugin.run();
       });
       this.intervalHandler = setInterval((): void => {
@@ -240,17 +241,17 @@ export default class App {
   }
 
   public rerun(e?: Error): void {
-    this.appLogger.warn(
+    logger.warn(
       `rerun() was called! An uncatched exception from a plugins run has been thrown!`
     );
     if (e instanceof Error) {
-      this.appLogger.error(e);
+      logger.error(e);
     }
-    this.appLogger.warn(`Clearing infinite loop Interval`);
+    logger.warn(`Clearing infinite loop Interval`);
     if (this.intervalHandler) {
       clearInterval(this.intervalHandler);
     }
-    this.appLogger.warn(`Starting over!`);
+    logger.warn(`Starting over!`);
     this.run(true);
   }
 }
