@@ -3,12 +3,13 @@ import NoPlugin from "./NoPlugin";
 import * as winston from "winston";
 import { app } from "./index";
 import { logger } from "./logger";
+import readline from "readline";
 
 const HEADER: string = JSON.stringify({
   version: 1,
-  stopSignal: 10,
-  contSignal: 12,
-  clickEvents: true
+  stop_signal: 10,
+  cont_signal: 12,
+  click_events: true
 });
 
 function handleExit(msg: string, exitCode: number, restart: boolean): void {
