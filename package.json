@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "repository": "git@gitlab.hellbit.de:ichag/nodebar.git",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "build": "tsc",
