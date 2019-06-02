@@ -28,58 +28,107 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-process.on("SIGTERM", (): void => {
-  handleExit("SIGTERM received!", 0, false);
-});
+process.on(
+  "exit",
+  (): void => {
+    handleExit("exit received!", 1, false);
+  }
+);
 
-process.on("SIGINT", (): void => {
-  handleExit("SIGINT received!", 0, false);
-});
-process.on("SIGHUP", (): void => {
-  handleExit("SIGHUP received!", 0, true);
-});
+process.on(
+  "SIGTERM",
+  (): void => {
+    handleExit("SIGTERM received!", 0, false);
+  }
+);
 
-process.on("SIGWINCH", (): void => {
-  handleExit("SIGWINCH received!", 0, true);
-});
+process.on(
+  "SIGINT",
+  (): void => {
+    handleExit("SIGINT received!", 0, false);
+  }
+);
+process.on(
+  "SIGHUP",
+  (): void => {
+    handleExit("SIGHUP received!", 0, true);
+  }
+);
 
-process.on("SIGPIPE", (): void => {
-  handleExit("SIGPIPE received!", 0, true);
-});
+process.on(
+  "SIGWINCH",
+  (): void => {
+    handleExit("SIGWINCH received!", 0, true);
+  }
+);
 
-process.on("SIGQUIT", (): void => {
-  handleExit("SIGQUIT received!", 0, true);
-});
+process.on(
+  "SIGPIPE",
+  (): void => {
+    handleExit("SIGPIPE received!", 0, true);
+  }
+);
 
-process.on("SIGBUS", (): void => {
-  handleExit("SIGBUS received!", 0, true);
-});
+process.on(
+  "SIGQUIT",
+  (): void => {
+    handleExit("SIGQUIT received!", 0, true);
+  }
+);
 
-process.on("SIGFPE", (): void => {
-  handleExit("SIGFPE received!", 0, true);
-});
+process.on(
+  "SIGBUS",
+  (): void => {
+    handleExit("SIGBUS received!", 0, true);
+  }
+);
 
-process.on("SIGSEGV", (): void => {
-  handleExit("SIGSEGV received!", 0, true);
-});
-process.on("SIGILL", (): void => {
-  handleExit("SIGILL received!", 0, true);
-});
-process.on("SIGABRT", (): void => {
-  handleExit("SIGABRT received!", 0, true);
-});
+process.on(
+  "SIGFPE",
+  (): void => {
+    handleExit("SIGFPE received!", 0, true);
+  }
+);
 
-process.on("SIGCONT", (): void => {
-  handleExit("SIGCONT received!", 0, true);
-});
+process.on(
+  "SIGSEGV",
+  (): void => {
+    handleExit("SIGSEGV received!", 0, true);
+  }
+);
+process.on(
+  "SIGILL",
+  (): void => {
+    handleExit("SIGILL received!", 0, true);
+  }
+);
+process.on(
+  "SIGABRT",
+  (): void => {
+    handleExit("SIGABRT received!", 0, true);
+  }
+);
 
-process.on("SIGUSR2", (): void => {
-  handleExit("SIGUSR2 received!", 0, true);
-});
+process.on(
+  "SIGCONT",
+  (): void => {
+    handleExit("SIGCONT received!", 0, true);
+  }
+);
 
-process.on("uncaughtException", (): void => {
-  handleExit("uncaughtException", 0, false);
-});
+process.on(
+  "SIGUSR2",
+  (): void => {
+    handleExit("SIGUSR2 received!", 0, true);
+  }
+);
+
+process.on(
+  "uncaughtException",
+  (): void => {
+    handleExit("uncaughtException", 0, false);
+  }
+);
 
 export default class App {
   public setPlugins(value: BasePlugin[]): void {
