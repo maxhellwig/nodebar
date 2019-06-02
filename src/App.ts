@@ -146,6 +146,32 @@ export default class App {
   public constructor(plugins: BasePlugin[]) {
     this._plugins = plugins;
     this.appLogger = logger;
+
+    rl.on(
+      "line",
+      (line): void => {
+        try {
+          if (line != "[") {
+            this.appLogger.info(App.prepareClickEventLine(line));
+            const event = JSON.parse(App.prepareClickEventLine(line));
+            this.onPluginClick(event.name, event.instance, event.button);
+          }
+        } catch (e) {
+          this.appLogger.error(
+            `Failed to parse click event ${e} \n message was ${line}`
+          );
+        }
+      }
+    );
+  }
+
+  /**
+   *
+   * @param line
+   * @returns string
+   */
+  private static prepareClickEventLine(line: string): string {
+    return line.trim().replace(new RegExp("^,"), "")
   }
 
   /**
@@ -154,11 +180,29 @@ export default class App {
    */
   private collectOutput(plugins: BasePlugin[]): string {
     let output = "";
-    plugins.forEach((plugin): void => {
-      const pluginOutput = plugin.emit();
-      output += `,${pluginOutput}`;
-    });
+    plugins.forEach(
+      (plugin): void => {
+        const pluginOutput = plugin.emit();
+        output += `,${pluginOutput}`;
+      }
+    );
     return output;
+  }
+
+  public onPluginClick(name: string, instance: string, button: number): void {
+    for (let plugin of this._plugins) {
+      if (plugin.name == name) {
+        try {
+          plugin.onClick(button);
+        } catch (e) {
+          this.appLogger.error(e);
+        }
+        return;
+      }
+    }
+    this.appLogger.error(
+      `Click by unregistered plugin "${name}" instance "${instance}"`
+    );
   }
 
   public run(printHeader: boolean): void {
