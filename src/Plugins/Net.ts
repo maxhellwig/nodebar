@@ -1,4 +1,4 @@
-import BasePlugin from "./BasePlugin";
+import BasePlugin, { ClickCommand } from "./BasePlugin";
 import * as os from "os";
 import {
   NetworkInterfaceInfo,
@@ -8,8 +8,8 @@ import {
 import { COLORS } from "../config";
 
 export default class Net extends BasePlugin {
-  public constructor(name: string, ticks: number) {
-    super(name, ticks);
+  public constructor(name: string, ticks: number, onClick?: ClickCommand[]) {
+    super(name, ticks, onClick);
   }
 
   public cycle(): void {
