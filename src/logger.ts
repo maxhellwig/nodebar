@@ -1,11 +1,11 @@
 import * as winston from "winston";
 import { format } from "winston";
-import { LOGPATH } from "./config";
+import { LOGLEVEL, LOGPATH } from "./config";
 
 const { combine, timestamp } = format;
 
 export const logger: winston.Logger = winston.createLogger({
-  level: "info",
+  level: LOGLEVEL,
   format: combine(timestamp(), format.json()),
   defaultMeta: { service: "index" },
   transports: [
