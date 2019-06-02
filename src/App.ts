@@ -22,8 +22,10 @@ function handleExit(msg: string, exitCode: number, restart: boolean): void {
   }
 }
 
-process.on("exit", (): void => {
-  handleExit("exit received!", 1, false);
+const rl = readline.createInterface({
+  input: process.stdin,
+  terminal: false,
+  output: process.stdout
 });
 
 process.on("SIGTERM", (): void => {
