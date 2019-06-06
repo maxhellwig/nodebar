@@ -34,7 +34,7 @@ export interface ClickCommand {
 export default class BasePlugin implements Updateable {
   protected static logger: winston.Logger = logger;
 
-  protected fullText: string = "";
+  private _fullText: string = "";
   protected shortText: string = "";
   protected color: string = "#ffffff";
   protected background: string = "#000000";
@@ -60,6 +60,14 @@ export default class BasePlugin implements Updateable {
     this.ticks = ticks;
   }
 
+  public get fullText(): string {
+    return this._fullText;
+  }
+
+  public set fullText(value: string) {
+    this._fullText = value;
+  }
+
   public cycle(): void {
     throw new NotImplemented("Please implement me");
   }
@@ -67,7 +75,7 @@ export default class BasePlugin implements Updateable {
   public emit(): string {
     return JSON.stringify({
       // eslint-disable-next-line @typescript-eslint/camelcase
-      full_text: this.fullText,
+      full_text: this._fullText,
       name: this.name,
       color: this.color,
       background: this.background,

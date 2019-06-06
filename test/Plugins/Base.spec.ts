@@ -1,25 +1,26 @@
-import BasePlugin, { NotImplemented } from "../../src/Plugins/BasePlugin";
+import BasePlugin from "../../src/Plugins/BasePlugin";
 import { expect } from "chai";
 import sinon, { SinonFakeTimers } from "sinon";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const uuid = require("uuid/v1");
 
 describe("Base plugin", () => {
   let base: BasePlugin;
   beforeEach(() => {
-    base = new BasePlugin("Base", 1, "abc");
+    base = new BasePlugin("Base", 1, [], "abc");
   });
   it("Throws NotImplemented Exception if base cycle method is called", () => {
     expect(base.cycle).to.throw();
   });
   it("Returns a json representation of i3bar relevant information for emit()", () => {
     const expected =
-      "{\"fullText\":\"\",\"name\":\"Base\",\"color\":\"#ffffff\",\"background\":\"#000000\",\"urgent\":false}";
+      '{"fullText":"","name":"Base","color":"#ffffff","background":"#000000","urgent":false}';
     expect(base.emit()).to.be.equal(expected);
   });
   it("Returns a json representation of itself for toString()", () => {
     const expected =
-      "{\"fullText\":\"\",\"shortText\":\"\",\"color\":\"#ffffff\",\"background\":\"#000000\",\"minWidth\":300,\"align\":\"right\",\"urgent\":false,\"name\":\"Base\",\"instance\":\"abc\",\"separator\":true,\"separatorBlockWidth\":9,\"ticks\":1}";
+      '{"fullText":"","shortText":"","color":"#ffffff","background":"#000000","minWidth":300,"align":"right","urgent":false,"name":"Base","instance":"abc","separator":true,"separatorBlockWidth":9,"ticks":1}';
 
     expect(base.toString()).to.be.equal(expected);
   });
