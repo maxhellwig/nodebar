@@ -2,6 +2,14 @@ import BasePlugin from "./BasePlugin";
 import * as os from "os";
 import moment = require("moment");
 
+export const leftPad = (input: number): string => {
+  if (input < 10) {
+    return "0" + input;
+  } else {
+    return input.toString();
+  }
+};
+
 export default class Uptime extends BasePlugin {
   private _uptime: number = 0;
 
@@ -23,19 +31,11 @@ export default class Uptime extends BasePlugin {
    */
   private handleUptimeOverAYear(): void {
     // second of a whole year. Your system is up for over a year??? For the kernel to update you have to restart your system!
-    const isOver = this._uptime >= 31557600;
-    if (isOver) {
+    const hasLongUptime = this._uptime >= 31557600;
+    if (hasLongUptime) {
       this.background = "#ff0000";
       this.urgent = true;
       this.fullText = this.fullText + " Please restart your system!";
-    }
-  }
-
-  private static pad(input: number): string {
-    if (input < 10) {
-      return "0" + input;
-    } else {
-      return input.toString();
     }
   }
 
@@ -45,10 +45,12 @@ export default class Uptime extends BasePlugin {
     const minutes = uptime.minutes();
     const seconds = uptime.seconds();
 
-    return `${days} days ${Uptime.pad(hours)}:${Uptime.pad(
-      minutes
-    )}:${Uptime.pad(seconds)}`;
+    return `${days} days ${leftPad(hours)}:${leftPad(minutes)}:${leftPad(
+      seconds
+    )}`;
   }
+
+  public getUptime = (): number => os.uptime();
 
   /**
    * Reads current update using the os.uptime() methode provided by nodejs.
@@ -56,7 +58,7 @@ export default class Uptime extends BasePlugin {
    * For shortText it prints just the number of seconds.
    */
   public cycle(): void {
-    this.uptime = os.uptime();
+    this.uptime = this.getUptime();
     const momentDuration = moment.duration(this.uptime, "seconds");
     this.fullText = Uptime.formatDateTime(momentDuration);
     this.shortText = os.uptime().toString();
