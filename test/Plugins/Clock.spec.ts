@@ -1,18 +1,19 @@
 import Clock from "../../src/Plugins/Clock";
 import { expect } from "chai";
 import moment = require("moment");
-import sinon from "sinon";
+import BasePlugin from "../../src/Plugins/BasePlugin";
 
 describe("Clock cycle prints same datetime string", () => {
-  afterEach(() => {
-    // Restore the default sandbox here
-    sinon.restore();
-  });
+  afterEach(
+    (): void => {
+      // Restore the default sandbox here
+    }
+  );
 
-  it("should return mocked date", () => {
-    const clock = new Clock("Clock", 1);
-    const mockedDateAndTime  = "2017-03-02 12:00:00";
-    moment.now = () => {
+  it("should return mocked date", (): void => {
+    const clock: BasePlugin = new Clock("Clock", 1);
+    const mockedDateAndTime = "2017-03-02 12:00:00";
+    moment.now = (): number => {
       return +Date.parse(mockedDateAndTime);
     };
     clock.cycle();
