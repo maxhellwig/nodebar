@@ -4,6 +4,8 @@ import { spawn } from "child_process";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import uuid = require("uuid/v1");
+import { Notifiable } from "../Notifications/Notifiable";
+import { NotifySend } from "../Notifications/NotifySend";
 
 interface Updateable {
   cycle(): void;
@@ -32,7 +34,10 @@ export interface ClickCommand {
 }
 
 export default class BasePlugin implements Updateable {
+
   protected static logger: winston.Logger = logger;
+
+  private _notifier?: Notifiable;
 
   private _fullText: string = "";
   protected shortText: string = "";
@@ -58,6 +63,11 @@ export default class BasePlugin implements Updateable {
     this.instance = customUuid || uuid();
     this.clickCommands = onClick || [];
     this.ticks = ticks;
+    this._notifier = new NotifySend()
+  }
+
+  public set notifier(value: Notifiable) {
+    this._notifier = value;
   }
 
   public get fullText(): string {
