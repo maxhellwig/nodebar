@@ -8,5 +8,5 @@ export interface Notifiable {
   summary?: string;
   body: string;
 
-  notify(summary: string, body: string): void;
+  notify(summary: string, body: string, spawner?: any): void;
 }

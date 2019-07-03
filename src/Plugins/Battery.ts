@@ -1,7 +1,6 @@
 import BasePlugin from "./BasePlugin";
 import { COLORS } from "../config";
 import fs from "fs";
-import { NotificationOptions } from "../Notifications/NotifySend";
 
 const fsPromises = fs.promises;
 
@@ -56,7 +55,6 @@ export default class Battery extends BasePlugin {
       if (capacity < this.criticalCapacity) {
         this.color = this.criticalColor;
         this.background = this.criticalBackground;
-
         this.notifier.notify(
           "Battery critical",
           `${this.name} is below ${capacity}`
