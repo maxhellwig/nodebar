@@ -5,8 +5,5 @@ export enum UrgencyLevel {
 }
 
 export interface Notifiable {
-  summary?: string;
-  body: string;
-
-  notify(summary: string, body: string, spawner?: any): void;
+  notify(summary: string, body: string): void;
 }
