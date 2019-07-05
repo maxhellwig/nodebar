@@ -1,21 +1,25 @@
 import { NotifySend } from "../../src/Notifications/NotifySend";
-import { Notifiable } from "../../src/Notifications/Notifiable";
 import sinon from "sinon";
-import { expect } from "chai";
-
-const spawn = require("child_process").spawn;
-
 
 describe("NotifySend notifier", () => {
-  let notifier: Notifiable;
-  let mockedSpawn = sinon.stub(spawn);
+  let notifier: NotifySend;
   beforeEach(() => {
     notifier = new NotifySend();
+    sinon.stub(notifier, "getSpawn");
   });
+  afterEach(
+    (): void => {
+      // @ts-ignore
+      notifier.getSpawn.restore();
+    }
+  );
   it("should do spawn mock with notify-send system library", () => {
-
-
-    notifier.notify("test summary", "test body");
-    expect(mockedSpawn.calledOnce);
+    const testSummary = "test summary";
+    const testBody = "test body";
+    notifier.notify(testSummary, testBody);
+    // @ts-ignore
+    sinon.assert.calledOnce(notifier.getSpawn);
+    const { getSpawn } = notifier;
+    sinon.assert.calledWith(getSpawn, testSummary, testBody);
   });
 });

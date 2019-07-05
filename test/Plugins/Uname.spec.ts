@@ -3,7 +3,7 @@ import { expect } from "chai";
 import * as os from "os";
 
 describe("Cycle of Hostname", () => {
-  it("should return ubuntu when os.hostname() is ubuntu", () => {
+  it("should return the same hostname as os.hostname()", () => {
     const currentHostname = os.hostname();
     const uname = new Hostname("Hostname", 1);
     uname.cycle();
