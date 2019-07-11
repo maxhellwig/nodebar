@@ -4,6 +4,12 @@ import fs from "fs";
 
 const fsPromises = fs.promises;
 
+enum warningLevel {
+  normal = "normal",
+  warning = "warning",
+  critical = "critical"
+}
+
 export default class Battery extends BasePlugin {
   private readonly batteryBasePath: string = "/sys/class/power_supply";
   private readonly battery: string;
@@ -15,6 +21,7 @@ export default class Battery extends BasePlugin {
   private criticalCapacity: number = 10;
   private criticalColor: string = COLORS.WHITE;
   private criticalBackground: string = COLORS.CRITICAL;
+  private previousLevel = warningLevel.normal;
 
   public constructor(name: string, ticks: number, battery: string) {
     super(name, ticks);
@@ -42,6 +49,15 @@ export default class Battery extends BasePlugin {
     );
   }
 
+  private notify(capacity: number, level: warningLevel): void {
+    if (level != this.previousLevel) {
+      this.notifier.notify(
+        `Battery ${level}`,
+        `${this.name} is below ${capacity}%`
+      );
+    }
+  }
+
   public async cycle(): Promise<void> {
     let capacity: number;
     let status = "";
@@ -55,20 +71,17 @@ export default class Battery extends BasePlugin {
       if (capacity < this.criticalCapacity) {
         this.color = this.criticalColor;
         this.background = this.criticalBackground;
-        this.notifier.notify(
-          "Battery critical",
-          `${this.name} is below ${capacity}`
-        );
+        this.notify(capacity, warningLevel.critical);
+        this.previousLevel = warningLevel.critical;
       } else if (capacity < this.warningCapacity) {
         this.color = this.warningColor;
         this.background = this.warningBackground;
-        this.notifier.notify(
-          "Battery warning",
-          `${this.name} is below ${capacity}`
-        );
+        this.notify(capacity, warningLevel.warning);
+        this.previousLevel = warningLevel.warning;
       } else {
         this.color = COLORS.WHITE;
         this.background = COLORS.BLACK;
+        this.previousLevel = warningLevel.normal;
       }
     } catch (e) {
       BasePlugin.logger.error("Could not read battery capacity");
