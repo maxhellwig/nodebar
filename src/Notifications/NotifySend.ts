@@ -1,33 +1,35 @@
-import { Notifiable, UrgencyLevel } from "./Notifiable";
+import { Notifiable } from "./Notifiable";
 import * as winston from "winston";
 import { logger } from "../logger";
 
-export interface NotifySendOptions {
-  urgency: UrgencyLevel;
-  expireTime?: number;
-}
+export default class NotifySend implements Notifiable {
+  private logger: winston.Logger = logger;
 
-export class NotifySend implements Notifiable {
-  protected static logger: winston.Logger = logger;
+  private readonly notificationLibrary: string;
+  private readonly spawner: any;
 
-  public set options(value: NotifySendOptions) {
-    this._options = value;
+  private options: object | null = null;
+
+  public constructor(notificationLibrary: string, spawner: any) {
+    this.notificationLibrary = notificationLibrary;
+    this.spawner = spawner;
   }
 
-  private _options: NotifySendOptions = {
-    urgency: UrgencyLevel.NORMAL,
-    expireTime: 3000 // in ms
-  };
+  public setOptions(options: object): void {
+    this.options = options;
+  }
 
-  public getSpawn = (process: string, params: string[]) => require("child_process").spawn(process, params);
-
-  public notify(summary: string, body: string): void {
-    const response = this.getSpawn("notify-send", [
-      summary,
-      body,
-      `--expire-time=${this._options.expireTime}`,
-      `--urgency=${this._options.urgency}`
-    ]);
-    logger.info(response);
+  public notify(title: string, body: string): void {
+    let response;
+    if (this.options) {
+      response = this.spawner(this.notificationLibrary, [
+        title,
+        body,
+        this.options
+      ]);
+    } else {
+      response = this.spawner(this.notificationLibrary, [title, body]);
+    }
+    this.logger.info(response);
   }
 }

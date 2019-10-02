@@ -26,7 +26,7 @@ export default class Uptime extends BasePlugin {
   }
 
   /**
-   * When the system uptime is greater than one whole year this functions sets the background to red and urgency true.
+   * When the system uptime is greater than one year this functions sets the background to red and urgency true.
    * It does this by changing the current object instance attributes.
    */
   private handleUptimeOverAYear(): void {

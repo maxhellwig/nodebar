@@ -1,12 +1,12 @@
 import Hostname from "../../src/Plugins/Hostname";
-import { expect } from "chai";
-import * as os from "os";
+import os from "os";
+jest.mock('os')
 
 describe("Cycle of Hostname", () => {
   it("should return the same hostname as os.hostname()", () => {
-    const currentHostname = os.hostname();
+    const expected = "abc";
     const uname = new Hostname("Hostname", 1);
     uname.cycle();
-    expect(uname.fullText).to.equal(currentHostname);
+    expect(uname.fullText).toEqual(expected);
   });
 });

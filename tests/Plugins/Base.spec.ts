@@ -1,6 +1,4 @@
 import BasePlugin from "../../src/Plugins/BasePlugin";
-import { expect } from "chai";
-import sinon, { SinonFakeTimers } from "sinon";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const uuid = require("uuid/v1");
@@ -11,18 +9,18 @@ describe("Base plugin", () => {
     base = new BasePlugin("Base", 1, [], "abc");
   });
   it("Throws NotImplemented Exception if base cycle method is called", () => {
-    expect(base.cycle).to.throw();
+    expect(base.cycle).toThrow();
   });
   it("Returns a json representation of i3bar relevant information for emit()", () => {
     const expected =
       '{"full_text":"","name":"Base","color":"#ffffff","background":"#000000","urgent":false}';
-    expect(base.emit()).to.be.equal(expected);
+    expect(base.emit()).toEqual(expected);
   });
   it("Returns a json representation of itself for toString()", () => {
     const expected =
       '{"_fullText":"","shortText":"","color":"#ffffff","background":"#000000","minWidth":300,"align":"right","urgent":false,"name":"Base","instance":"abc","separator":true,"separatorBlockWidth":9,"ticks":1,"clickCommands":[]}';
 
-    expect(base.toString()).to.be.equal(expected);
+    expect(base.toString()).toEqual(expected);
   });
 });
 
@@ -55,7 +53,7 @@ describe("run()", () => {
     try {
       base.run();
     } catch (e) {
-      expect(e).to.be.an("error");
+      expect(e).toThrow("error");
       clock.tick(1000);
       1;
       done();

@@ -2,10 +2,8 @@ import * as winston from "winston";
 import { logger } from "../logger";
 import { spawn } from "child_process";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import uuid = require("uuid/v1");
 import { Notifiable } from "../Notifications/Notifiable";
-import { NotifySend } from "../Notifications/NotifySend";
 
 interface Updateable {
   cycle(): void;
@@ -36,8 +34,6 @@ export interface ClickCommand {
 export default class BasePlugin implements Updateable {
   protected static logger: winston.Logger = logger;
 
-  private _notifier: Notifiable = new NotifySend();
-
   private _fullText: string = "";
   protected shortText: string = "";
   protected color: string = "#ffffff";
@@ -62,14 +58,6 @@ export default class BasePlugin implements Updateable {
     this.instance = customUuid || uuid();
     this.clickCommands = onClick || [];
     this.ticks = ticks;
-  }
-
-  public set notifier(value: Notifiable) {
-    this._notifier = value;
-  }
-
-  public get notifier(): Notifiable {
-    return this._notifier;
   }
 
   public get fullText(): string {
