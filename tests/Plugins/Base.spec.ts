@@ -1,7 +1,10 @@
-import BasePlugin from "../../src/Plugins/BasePlugin";
-
+import BasePlugin, {
+  NotImplemented
+} from "../../src/Plugins/BasePlugin";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const uuid = require("uuid/v1");
+
+jest.useFakeTimers();
 
 describe("Base plugin", () => {
   let base: BasePlugin;
@@ -9,7 +12,7 @@ describe("Base plugin", () => {
     base = new BasePlugin("Base", 1, [], "abc");
   });
   it("Throws NotImplemented Exception if base cycle method is called", () => {
-    expect(base.cycle).toThrow();
+    expect(base.cycle).toThrow(NotImplemented);
   });
   it("Returns a json representation of i3bar relevant information for emit()", () => {
     const expected =
@@ -26,35 +29,27 @@ describe("Base plugin", () => {
 
 describe("run()", () => {
   let base: BasePlugin;
-  let clock: SinonFakeTimers;
   beforeEach(() => {
     base = new BasePlugin("Base", 1);
-    clock = sinon.useFakeTimers({
-      now: 1483228800000,
-      toFake: ["setTimeout", "setInterval"]
-    });
+    base.cycle = jest.fn();
   });
+
   it("Runs cycle for the first time", () => {
-    const cycleMock = sinon.stub(base, "cycle");
     base.run();
-    sinon.assert.called(cycleMock);
+    expect(setInterval).toHaveBeenCalled();
   });
   it("Runs cycle twice after interval", done => {
-    const cycleMock = sinon.stub(base, "cycle");
     base.run();
-    clock.tick(1000);
-    sinon.assert.calledTwice(cycleMock);
+
+    expect(setInterval).toHaveBeenCalled();
     done();
   });
   it("Breaks after cycle throws an exception", done => {
     const mockErrorMessage = "Mock error in cycle";
-    const cycleMock = sinon.stub(base, "cycle");
-    cycleMock.throwsException(mockErrorMessage);
     try {
-      base.run();
+      base = new BasePlugin("Base", 1);
     } catch (e) {
       expect(e).toThrow("error");
-      clock.tick(1000);
       1;
       done();
     }
