@@ -24,8 +24,12 @@ describe("NotifySend notifier", () => {
       "--urgency": UrgencyLevel.CRITICAL,
       "--expireTime": 3000
     };
-    notifier.setOptions(options)
+    notifier.setOptions(options);
     notifier.notify(testTitle, testBody);
-    expect(spawner).toHaveBeenCalledWith(notifierLib, [testTitle, testBody,options]);
+    expect(spawner).toHaveBeenCalledWith(notifierLib, [
+      testTitle,
+      testBody,
+      options
+    ]);
   });
 });

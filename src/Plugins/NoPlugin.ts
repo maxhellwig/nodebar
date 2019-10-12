@@ -1,5 +1,5 @@
-import BasePlugin from "./Plugins/BasePlugin";
-import { COLORS } from "./config";
+import BasePlugin from "./BasePlugin";
+import { COLORS } from "../config";
 
 export const NOPLUGIN_FULLTEST = "No plugins found!";
 export const NOPLUGIN_SHORTTEST = "No plugins!";

@@ -1,5 +1,5 @@
 import BasePlugin from "./Plugins/BasePlugin";
-import NoPlugin from "./NoPlugin";
+import NoPlugin from "./Plugins/NoPlugin";
 import * as winston from "winston";
 import { app } from "./index";
 import { logger } from "./logger";

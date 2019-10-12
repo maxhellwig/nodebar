@@ -3,7 +3,6 @@ import { logger } from "../logger";
 import { spawn } from "child_process";
 
 import uuid = require("uuid/v1");
-import { Notifiable } from "../Notifications/Notifiable";
 
 interface Updateable {
   cycle(): void;

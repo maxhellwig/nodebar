@@ -23,9 +23,9 @@ export default class Battery extends BasePlugin {
   private criticalBackground: string = COLORS.CRITICAL;
   private previousLevel = warningLevel.normal;
 
-  public constructor(name: string, ticks: number, battery: string) {
+  public constructor(name: string, ticks: number) {
     super(name, ticks);
-    this.battery = battery.toUpperCase();
+    this.battery = name.toUpperCase();
     this.capacityPath = `${this.batteryBasePath}/${this.battery}/capacity`;
     this.statusPath = `${this.batteryBasePath}/${this.battery}/status`;
   }
@@ -51,7 +51,7 @@ export default class Battery extends BasePlugin {
 
   private notify(capacity: number, level: warningLevel): void {
     if (level != this.previousLevel) {
-      this.notifier.notify(
+      BasePlugin.logger.error(
         `Battery ${level}`,
         `${this.name} is below ${capacity}%`
       );
