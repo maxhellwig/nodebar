@@ -15,6 +15,8 @@ export default class Battery extends BasePlugin {
   private readonly battery: string;
   private readonly capacityPath: string;
   private readonly statusPath: string;
+  private readonly energyPath: string;
+  private readonly voltagePath: string;
   private warningCapacity: number = 30;
   private warningColor: string = COLORS.WARNING;
   private warningBackground: string = COLORS.BLACK;
@@ -27,6 +29,8 @@ export default class Battery extends BasePlugin {
     super(name, ticks);
     this.battery = name.toUpperCase();
     this.capacityPath = `${this.batteryBasePath}/${this.battery}/capacity`;
+    this.energyPath = `${this.batteryBasePath}/${this.battery}/energy_now`;
+    this.voltagePath = `${this.batteryBasePath}/${this.battery}/voltage_now`;
     this.statusPath = `${this.batteryBasePath}/${this.battery}/status`;
   }
 
@@ -58,14 +62,23 @@ export default class Battery extends BasePlugin {
     }
   }
 
+  private getTimeLeft(energy: number, voltage: number): number {
+    return energy / voltage;
+  }
+
   public async cycle(): Promise<void> {
     let capacity: number;
+    let voltage: number;
+    let energy: number;
     let status = "";
     try {
       capacity = parseInt(await this.getValue(this.capacityPath));
+      voltage = parseInt(await this.getValue(this.voltagePath));
+      energy = parseInt(await this.getValue(this.energyPath));
+      let timeLeft = this.getTimeLeft(energy, voltage).toFixed(2);
       status = await this.getValue(this.statusPath);
       status = status.replace(/\n/, "");
-      this.fullText = `${status} ${capacity}%`;
+      this.fullText = `${status} ${capacity}% (${timeLeft})`;
       this.shortText = `${capacity}%`;
 
       if (capacity < this.criticalCapacity) {
