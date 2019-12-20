@@ -3,7 +3,7 @@ import { UrgencyLevel } from "../../src/Notifications/Notifiable";
 
 describe("NotifySend notifier", () => {
   let notifier: NotifySend;
-  let spawner: jest.Mock<any, any>;
+  let spawner: jest.Mock;
   const notifierLib = "notify-send";
   beforeEach(() => {
     spawner = jest.fn();
@@ -24,8 +24,7 @@ describe("NotifySend notifier", () => {
       "--urgency": UrgencyLevel.CRITICAL,
       "--expireTime": 3000
     };
-    notifier.setOptions(options);
-    notifier.notify(testTitle, testBody);
+    notifier.notify(testTitle, testBody, options);
     expect(spawner).toHaveBeenCalledWith(notifierLib, [
       testTitle,
       testBody,
