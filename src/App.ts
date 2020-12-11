@@ -207,7 +207,6 @@ export default class App {
   }
 
   public run(printHeader: boolean): void {
-    const self = this;
     if (!printHeader) {
       logger.info("Printing header");
       console.log(HEADER);
