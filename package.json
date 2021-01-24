@@ -5,7 +5,7 @@
   "repository": "git@gitlab.hellbit.de:ichag/nodebar.git",
   "main": "dist/index.js",
   "scripts": {
-    "build:watch": "nodemon --watch 'src/**/*.ts'",
+    "start": "nodemon --watch 'src/**/*.ts'",
     "build": "tsc",
     "test": "jest",
     "coverage": "jest --coverage"
