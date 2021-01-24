@@ -5,7 +5,7 @@
   "repository": "git@gitlab.hellbit.de:ichag/nodebar.git",
   "main": "dist/index.js",
   "scripts": {
-    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "build:watch": "nodemon --watch 'src/**/*.ts'",
     "build": "tsc",
     "test": "jest",
     "coverage": "jest --coverage"
@@ -13,27 +13,27 @@
   "author": "Max Hellwig",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "@types/node": "^11.13.21",
+    "@types/jest": "^24.9.1",
+    "@types/moment": "^2.13.0",
+    "@types/node": "^11.15.44",
+    "@types/uuid": "^3.4.9",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^5.16.0",
     "eslint-config-google": "^0.12.0",
     "eslint-config-prettier": "^4.3.0",
-    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-prettier": "^3.3.1",
     "jest": "^24.9.0",
-    "nodemon": "^1.19.2",
+    "nodemon": "^1.19.4",
     "prettier": "1.16.4",
-    "ts-jest": "^24.1.0",
-    "ts-node": "^8.4.1",
+    "ts-jest": "^24.3.0",
+    "ts-node": "^8.10.2",
     "typescript": "3.5.1",
-    "winston": "^3.2.1",
-    "@types/moment": "^2.13.0",
-    "@types/uuid": "^3.4.5"
+    "winston": "^3.3.3"
   },
   "dependencies": {
-    "moment": "^2.24.0",
-    "uuid": "^3.3.3"
+    "moment": "^2.29.1",
+    "uuid": "^3.4.0"
   }
 }
