@@ -1,5 +1,6 @@
-# nodebar - a nodejs implementation of the i3bar status protocol
+# nodebar - a nodejs implementation of the i3bar status protocol be used as status bar in i3
 
-## Next Steps
-* Create a package from nodebar
-* Expose nodebar init method to inject a list of plugins from outside <- InversionOfControl FTW !1!!!
+To configure the app, create a new plugins.ts from the plugins.ts.template and configure them as needed.
+
+To implement new plugins, just extend the `/Plugins/BasePlugin.ts` or implement `Updateable` interface on your own.
+Some examples are in `src/Plugins`
